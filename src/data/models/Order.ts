@@ -6,7 +6,7 @@ class Order {
     public creationDate: Date
     public products: Product[]
 
-    constructor(id: string, totalPrice: number, creationDate: Date, products: List<Product>) {
+    constructor(id: string, totalPrice: number, creationDate: Date, products: Product[]) {
         this.id = id
         this.totalPrice = totalPrice
         this.creationDate = creationDate
