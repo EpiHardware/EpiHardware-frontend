@@ -2,15 +2,15 @@ import Order from "../models/Order";
 import Product from "../models/Product";
 
 abstract class OrderMethods {
-    public static async getAll(user: User, token: string): Promise<Order[] | Error> {
+    public static async getAll(): Promise<Order[] | Error> {
         //Todo Implement this method
     }
 
-    public static async get(order: Order, user: User, token: string): Promise<Order | Error> {
+    public static async get(id: string): Promise<Order | Error> {
         //todo Implement this method
     }
 
-    public static async checkout(order: Order, user: User, token: string): Promise<Order | Error> {
+    public static async checkout(order: Order): Promise<Order | Error> {
         //Todo: Implement this method
     }
 

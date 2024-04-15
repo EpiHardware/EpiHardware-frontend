@@ -20,6 +20,16 @@ abstract class UserMethods {
         //Todo: Implement the update method
     }
 
-    public static async get(login: string, token: string): Promise<User|Error> {}
+    public static async get(login: string, token: string): Promise<User|Error> {
+        //todo Implement this method
+    }
+
+    public static getToken(): string|null {
+        //todo Implement this method
+    }
+
+    public static addToken(token: string): void {
+        //todo Implement this method
+    }
 }
 export default UserMethods
