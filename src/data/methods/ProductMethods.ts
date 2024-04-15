@@ -20,6 +20,41 @@ abstract class ProductMethods {
                 return error
             })
     }
+
+    public static async get(id: number): Promise<Product | Error> {
+        return await fetch(`http://localhost:3000/products/${id}`) // Todo: update the URL of this fetch request
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok')
+                }
+                return response.json();
+            })
+            .then(data => {
+                return new Product(data.id, data.name, data.description, data.price, data.photo)
+            })
+            .catch((error) => {
+                return error
+            });
+    }
+
+    public static async create(product: Product): Promise<Product | Error> {
+        return await fetch('http://localhost:3000/products', { // Todo: update the URL of this fetch request
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(product.toJSON())
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok')
+                }
+                return response.json();
+            })
+            .catch((error) => {
+                return error
+            });
+    }
 }
 
 export default ProductMethods
