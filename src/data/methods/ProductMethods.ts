@@ -55,6 +55,14 @@ abstract class ProductMethods {
                 return error
             });
     }
+
+    public static async update(product: Product): Promise<Product | Error> {
+        //Todo: Implement the update method
+    }
+
+    public static async delete(product: Product): Promise<Product | Error> {
+        //Todo: Implement the delete method
+    }
 }
 
 export default ProductMethods
