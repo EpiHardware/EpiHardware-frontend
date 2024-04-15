@@ -1,5 +1,5 @@
 import Order from "../models/Order";
-import User from "../models/User";
+import Product from "../models/Product";
 
 abstract class OrderMethods {
     public static async getAll(user: User, token: string): Promise<Order[] | Error> {
@@ -12,6 +12,22 @@ abstract class OrderMethods {
 
     public static async checkout(order: Order, user: User, token: string): Promise<Order | Error> {
         //Todo: Implement this method
+    }
+
+    public static addToCart(product: Product): void {
+        //todo Implement this method
+    }
+
+    public static removeFromCart(product: Product): void {
+        //todo Implement this method
+    }
+
+    public static clearCart(): void {
+        //todo Implement this method
+    }
+
+    public static getCart(): Product[] {
+        //todo Implement this method
     }
 }
 
