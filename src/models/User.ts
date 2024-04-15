@@ -4,6 +4,7 @@ class User {
     public firstname: string
     public lastname: string
     public email: string
+    public token: string|null = null
 
     constructor(login: string, password: string, firstname: string, lastname: string, email: string) {
         this.login = login
