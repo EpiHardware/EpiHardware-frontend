@@ -63,20 +63,39 @@ abstract class OrderMethods {
     }
 
     public static addToCart(product: Product): void {
-        //todo Implement this method
+        let cart = OrderMethods.getCart()
+        cart.push(product)
+        localStorage.setItem("cart", JSON.stringify(cart))
     }
 
     public static removeFromCart(product: Product): void {
-        //todo Implement this method
+        let cart = this.getCart()
+        for (let i = 0; i < cart.length; ++i) {
+            if (cart[i].id === product.id) {
+                cart.splice(i, 1)
+                break
+            }
+        }
+        localStorage.setItem("cart", JSON.stringify(cart))
     }
 
     public static clearCart(): void {
-        //todo Implement this method
+        localStorage.setItem("cart", JSON.stringify([]))
     }
 
-    public static getCart(): Product[] | Error {
-        return Error("Not Implemented")
-        //todo Implement this method
+    public static getCart(): Product[] {
+        let cart = localStorage.getItem("cart")
+        if (cart === null) {
+            return []
+        }
+        return JSON.parse(cart).map((product: any) => {
+            return new Product(
+                product.id,
+                product.name,
+                product.description,
+                product.price,
+                product.photo);
+        })
     }
 }
 
