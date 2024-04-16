@@ -3,14 +3,17 @@ import Product from "../models/Product";
 
 abstract class OrderMethods {
     public static async getAll(): Promise<Order[] | Error> {
+        return Error("Not Implemented")
         //Todo Implement this method
     }
 
     public static async get(id: string): Promise<Order | Error> {
+        return Error("Not Implemented")
         //todo Implement this method
     }
 
     public static async checkout(order: Order): Promise<Order | Error> {
+        return Error("Not Implemented")
         //Todo: Implement this method
     }
 
@@ -26,7 +29,8 @@ abstract class OrderMethods {
         //todo Implement this method
     }
 
-    public static getCart(): Product[] {
+    public static getCart(): Product[]|Error {
+        return Error("Not Implemented")
         //todo Implement this method
     }
 }

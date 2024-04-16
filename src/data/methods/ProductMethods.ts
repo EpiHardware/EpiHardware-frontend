@@ -57,10 +57,12 @@ abstract class ProductMethods {
     }
 
     public static async update(product: Product): Promise<Product | Error> {
+        return Error("Not Implemented")
         //Todo: Implement the update method
     }
 
     public static async delete(product: Product): Promise<Product | Error> {
+        return Error("Not Implemented")
         //Todo: Implement the delete method
     }
 }
