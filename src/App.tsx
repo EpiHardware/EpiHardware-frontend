@@ -1,34 +1,110 @@
-import React, {useEffect, useState} from 'react';
-import './App.css';
-import ProductMethods from "./data/methods/ProductMethods";
-import Product from "./data/models/Product";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+    About,
+    Cart,
+    Contact,
+    HomeLayout,
+    Landing,
+    Login,
+    Register,
+    Shop,
+    SingleProduct,
+    Wishlist,
+    Profile,
+    Search,
+    ThankYou,
+    OrderHistory
+} from "./pages";
+import { landingLoader } from "./pages/Landing";
+import { singleProductLoader } from "./pages/SingleProduct";
+import { shopLoader } from "./pages/Shop";
+import { ToastContainer } from "react-toastify";
 
-function App() {
-    const [products, setProducts] = useState<Product[]>([]);
-    const [error, setError] = useState<Error | null>();
+interface Route {
+    path: string;
+    element: React.ReactElement;
+    loader?: () => void;
+    index?: boolean;
+    children?: Route[];
+}
 
-    useEffect(() => {
-        ProductMethods.getAll()
-            .then((result) => {
-                if (result instanceof Error) {
-                    throw result;
-                }
-                setProducts(result);
-            })
-            .catch((error) => {
-                setError(error);
-            });
-    }, []);
+const routes: Route[] = [
+    {
+        path: "/",
+        element: <HomeLayout />,
+        children: [
+            {
+                index: true,
+                element: <Landing />,
+                loader: landingLoader,
+            },
+            {
+                path: "shop",
+                element: <Shop />,
+                loader: shopLoader
 
+            },
+            {
+                path: "shop/product/:id",
+                element: <SingleProduct />,
+                loader: singleProductLoader,
+            },
+            {
+                path: "about",
+                element: <About />,
+            },
+            {
+                path: "login",
+                element: <Login />,
+            },
+            {
+                path: "register",
+                element: <Register />,
+            },
+            {
+                path: "contact",
+                element: <Contact />,
+            },
+            {
+                path: "about-us",
+                element: <About />,
+            },
+            {
+                path: "cart",
+                element: <Cart />,
+            },
+            {
+                path: "wishlist",
+                element: <Wishlist />,
+            },
+            {
+                path: "user-profile",
+                element: <Profile />,
+            },
+            {
+                path:"search",
+                element: <Search />
+            },
+            {
+                path:"thank-you",
+                element: <ThankYou />
+            },
+            {
+                path:"order-history",
+                element: <OrderHistory />
+            }
+        ],
+    },
+];
+
+const router = createBrowserRouter(routes);
+
+const App: React.FC = () => {
     return (
-        <div className="App">
-            <p>mqlksdfjk</p>
-            <ul>
-                {error ? <li>{error.message}</li> : products.map((product) => (
-                    <li key={product.id}>{product.name}</li>
-                ))}
-            </ul>
-        </div>
+        <>
+            <RouterProvider router={router} />
+            <ToastContainer position="top-center" />
+        </>
     );
 }
 
