@@ -43,6 +43,10 @@ const Login: React.FC = () => {
         }
     };
 
+    const redirectToRegister = () => {
+        navigate('/register');
+    }
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
             <div className="w-full max-w-md px-6 py-8 text-left bg-white shadow-lg rounded-xl">
@@ -55,7 +59,7 @@ const Login: React.FC = () => {
                             placeholder="Enter your email"
                             value={email}
                             onChange={e => setEmail(e.target.value)}
-                            className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            className="w-full px-4 py-2 mt-2 border rounded-md"
                         />
                     </div>
                     <div className="mb-6">
@@ -65,11 +69,14 @@ const Login: React.FC = () => {
                             placeholder="Enter your password"
                             value={password}
                             onChange={e => setPassword(e.target.value)}
-                            className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            className="w-full px-4 py-2 mt-2 border rounded-md"
                         />
                     </div>
-                    <div className="flex items-center justify-between">
-                        <Button type="submit" className="px-6 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:bg-blue-700" onClick={handleLogin}>Login</Button>
+                    <div className="flex justify-between items-center">
+                        <div>
+                            <Button type="submit" className="px-6 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600" onClick={handleLogin}>Login</Button>
+                        </div>
+                        <p className="text-sm text-gray-600">New to the site? <a href="/register" className="text-blue-500 hover:underline">Sign up</a></p>
                     </div>
                 </form>
             </div>
