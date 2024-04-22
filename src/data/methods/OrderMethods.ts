@@ -28,8 +28,8 @@ abstract class OrderMethods {
             .catch((error) => error)
     }
 
-    public static async get(id: string): Promise<Order | Error> {
-        return await fetch(`http://localhost:5432/api/orders/${id}`)
+    public static async get(orderId: string): Promise<Order | Error> {
+        return await fetch(`http://localhost:5432/api/orders/${orderId}`)
             .then(response => {
                 let data: any = response.json()
                 if (!response.ok) {
@@ -54,7 +54,7 @@ abstract class OrderMethods {
     }
 
     public static async checkout(order: Order): Promise<void> {
-        return await fetch('http://localhost:5432/api/orders', {
+        return await fetch('http://localhost:5432/api/validate', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

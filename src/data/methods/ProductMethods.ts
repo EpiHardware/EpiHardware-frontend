@@ -22,8 +22,8 @@ abstract class ProductMethods {
             })
     }
 
-    public static async get(id: number): Promise<Product | Error> {
-        return await fetch(`http://localhost:5432/api/products/${id}`)
+    public static async get(productId: number): Promise<Product | Error> {
+        return await fetch(`http://localhost:5432/api/products/${productId}`)
             .then(response => {
                 let data: any = response.json()
                 if (!response.ok) {
