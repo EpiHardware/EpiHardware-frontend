@@ -17,7 +17,6 @@ class User {
     public toJSON() {
         return {
             login: this.login,
-            password: this.password,
             firstname: this.firstname,
             lastname: this.lastname,
             email: this.email
