@@ -1,4 +1,5 @@
 import Product from "../models/Product";
+import UserMethods from "./UserMethods";
 
 abstract class ProductMethods {
     public static async getAll(): Promise<Product[] | Error> {
@@ -44,7 +45,7 @@ abstract class ProductMethods {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(product.toJSON())
+            body: JSON.stringify({product: product.toJSON(), token: UserMethods.getToken()})
         })
             .then(response => {
                 let data: any = response.json()
@@ -63,7 +64,7 @@ abstract class ProductMethods {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(product.toJSON())
+                body: JSON.stringify({product: product.toJSON(), token: UserMethods.getToken()})
             }
         )
     }
@@ -74,6 +75,7 @@ abstract class ProductMethods {
                 headers: {
                     'Content-Type': 'application/json'
                 },
+            body: JSON.stringify({token: UserMethods.getToken()})
             }
         )
     }
