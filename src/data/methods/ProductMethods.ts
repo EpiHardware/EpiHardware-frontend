@@ -2,7 +2,7 @@ import Product from "../models/Product";
 
 abstract class ProductMethods {
     public static async getAll(): Promise<Product[] | Error> {
-        return await fetch('http://localhost:5432/products')
+        return await fetch('http://localhost:5432/api/products')
             .then(response => {
                 let data: any = response.json()
                 if (!response.ok) {
@@ -22,7 +22,7 @@ abstract class ProductMethods {
     }
 
     public static async get(id: number): Promise<Product | Error> {
-        return await fetch(`http://localhost:5432/products/${id}`)
+        return await fetch(`http://localhost:5432/api/products/${id}`)
             .then(response => {
                 let data: any = response.json()
                 if (!response.ok) {
@@ -38,8 +38,8 @@ abstract class ProductMethods {
             });
     }
 
-    public static async create(product: Product): Promise<Product | Error> {
-        return await fetch('http://localhost:5432/products', {
+    public static async create(product: Product): Promise<void | Error> {
+        return await fetch('http://localhost:5432/api/products', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -51,7 +51,6 @@ abstract class ProductMethods {
                 if (!response.ok) {
                     throw new Error(data.message)
                 }
-                return data;
             })
             .catch((error) => {
                 return error
@@ -59,7 +58,7 @@ abstract class ProductMethods {
     }
 
     public static async update(product: Product): Promise<void> {
-        await fetch(`http://localhost:5432/products/${product.id}`, {
+        await fetch(`http://localhost:5432/api/products/${product.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -70,7 +69,7 @@ abstract class ProductMethods {
     }
 
     public static async delete(product: Product): Promise<void> {
-        await fetch(`http://localhost:5432/products/${product.id}`, {
+        await fetch(`http://localhost:5432/api/products/${product.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'

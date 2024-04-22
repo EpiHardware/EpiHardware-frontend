@@ -3,7 +3,7 @@ import Product from "../models/Product";
 
 abstract class OrderMethods {
     public static async getAll(): Promise<Order[] | Error> {
-        return await fetch('http://localhost:5432/orders')
+        return await fetch('http://localhost:5432/api/orders')
             .then(response => {
                 let data: any = response.json()
                 if (!response.ok) {
@@ -28,7 +28,7 @@ abstract class OrderMethods {
     }
 
     public static async get(id: string): Promise<Order | Error> {
-        return await fetch(`http://localhost:5432/orders/${id}`)
+        return await fetch(`http://localhost:5432/api/orders/${id}`)
             .then(response => {
                 let data: any = response.json()
                 if (!response.ok) {
@@ -53,7 +53,7 @@ abstract class OrderMethods {
     }
 
     public static async checkout(order: Order): Promise<void> {
-        await fetch('http://localhost:5432/orders', {
+        await fetch('http://localhost:5432/api/orders', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

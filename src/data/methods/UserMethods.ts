@@ -3,7 +3,7 @@ import User from "../models/User";
 abstract class UserMethods {
 
     public static async register(user: User): Promise<void | Error> {
-        return await fetch('http://localhost:5432/register', {
+        return await fetch('http://localhost:5432/api/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -22,8 +22,8 @@ abstract class UserMethods {
     }
 
     public static async login(login: string, password: string): Promise<void | Error> {
-        return await fetch('http://localhost:5432/login', {
-            method: 'POST',
+        return await fetch('http://localhost:5432/api/login', {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -42,8 +42,8 @@ abstract class UserMethods {
     }
 
     public static async update(user: User): Promise<void | Error> {
-        return await fetch('http://localhost:5432/users', {
-            method: 'POST',
+        return await fetch('http://localhost:5432/api/users', {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -61,8 +61,8 @@ abstract class UserMethods {
     }
 
     public static async getDetails(login: string, token: string): Promise<User | Error> {
-        return await fetch('http://localhost:5432/users', {
-            method: 'POST',
+        return await fetch('http://localhost:5432/api/users', {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             },
