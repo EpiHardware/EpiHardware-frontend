@@ -59,7 +59,7 @@ abstract class ProductMethods {
     }
 
     public static async update(product: Product): Promise<void> {
-        fetch(`http://localhost:5432/products/${product.id}`, {
+        await fetch(`http://localhost:5432/products/${product.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -70,7 +70,7 @@ abstract class ProductMethods {
     }
 
     public static async delete(product: Product): Promise<void> {
-        fetch(`http://localhost:5432/products/${product.id}`, {
+        await fetch(`http://localhost:5432/products/${product.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
