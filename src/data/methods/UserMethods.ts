@@ -45,9 +45,10 @@ abstract class UserMethods {
         return await fetch('http://localhost:5432/api/users', {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + UserMethods.getToken()
             },
-            body: JSON.stringify({user: user.toJSON(), token: this.getToken()})
+            body: JSON.stringify(user.toJSON())
         })
             .then(response => {
                 let data: any = response.json()
@@ -64,9 +65,10 @@ abstract class UserMethods {
         return await fetch('http://localhost:5432/api/users', {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + UserMethods.getToken()
             },
-            body: JSON.stringify({login: login, token: token})
+            body: login
         })
             .then(response => {
                 let data: any = response.json()

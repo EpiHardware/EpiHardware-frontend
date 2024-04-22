@@ -57,9 +57,10 @@ abstract class OrderMethods {
         return await fetch('http://localhost:5432/api/validate', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + UserMethods.getToken()
             },
-            body: JSON.stringify({order: order.toJSON(), token: UserMethods.getToken()})
+            body: JSON.stringify(order.toJSON())
         }).then(response => {
             let data: any = response.json()
             if (!response.ok) {
@@ -75,9 +76,9 @@ abstract class OrderMethods {
         return await fetch(`http://localhost:5432/api/carts/${product.id}`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + UserMethods.getToken()
             },
-            body: JSON.stringify({token: UserMethods.getToken()})
         }).then(response => {
             let data: any = response.json()
             if (!response.ok) {
@@ -93,9 +94,9 @@ abstract class OrderMethods {
         return await fetch(`http://localhost:5432/api/carts/${product.id}`, {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + UserMethods.getToken()
             },
-            body: JSON.stringify({token: UserMethods.getToken()})
         }).then(response => {
             let data: any = response.json()
             if (!response.ok) {
@@ -111,15 +112,17 @@ abstract class OrderMethods {
         return await fetch(`http://localhost:5432/api/carts/}`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + UserMethods.getToken()
             },
-            body: JSON.stringify({token: UserMethods.getToken()})
         }).then(response => {
             let data: any = response.json()
             if (!response.ok) {
                 throw new Error(data.message)
             }
-            return data.map((productData: any) => {return Product.fromJSON(productData)})
+            return data.map((productData: any) => {
+                return Product.fromJSON(productData)
+            })
         })
             .catch((error) => {
                 return error

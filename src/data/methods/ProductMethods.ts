@@ -43,9 +43,10 @@ abstract class ProductMethods {
         return await fetch('http://localhost:5432/api/products', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + UserMethods.getToken()
             },
-            body: JSON.stringify({product: product.toJSON(), token: UserMethods.getToken()})
+            body: JSON.stringify(product.toJSON())
         })
             .then(response => {
                 let data: any = response.json()
@@ -62,9 +63,10 @@ abstract class ProductMethods {
         await fetch(`http://localhost:5432/api/products/${product.id}`, {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + UserMethods.getToken()
                 },
-                body: JSON.stringify({product: product.toJSON(), token: UserMethods.getToken()})
+                body: JSON.stringify(product.toJSON())
             }
         )
     }
@@ -73,9 +75,9 @@ abstract class ProductMethods {
         await fetch(`http://localhost:5432/api/products/${product.id}`, {
                 method: 'DELETE',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + UserMethods.getToken()
                 },
-            body: JSON.stringify({token: UserMethods.getToken()})
             }
         )
     }
