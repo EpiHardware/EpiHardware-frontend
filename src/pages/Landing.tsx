@@ -14,6 +14,7 @@ export interface Product {
             value: number;
         };
     };
+    brandName: string;
 }
 
 export const landingLoader = async () => {
@@ -26,7 +27,8 @@ export const landingLoader = async () => {
 };
 
 const Landing: React.FC = () => {
-    const { products } = useLoaderData<{ products: Product[] }>();
+    const data : any = useLoaderData();
+    const products: Product[] = data['products'];
     const navigate = useNavigate();
 
     return (
@@ -39,7 +41,7 @@ const Landing: React.FC = () => {
                     Trending Products
                 </h2>
                 <div className="selected-products-grid max-w-7xl mx-auto">
-                    {products.map((product) => (
+                    {products.map((product: Product) => (
                         <ProductElement
                             key={product.id}
                             id={product.id}
@@ -47,6 +49,7 @@ const Landing: React.FC = () => {
                             image={product.imageUrl}
                             rating={product.rating}
                             price={product.price.current.value}
+                            brandName={product.brandName}
                         />
                     ))}
                 </div>
