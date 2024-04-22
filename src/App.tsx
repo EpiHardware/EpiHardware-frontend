@@ -1,35 +1,24 @@
-import React, {useEffect, useState} from 'react';
-import './App.css';
-import ProductMethods from "./data/methods/ProductMethods";
-import Product from "./data/models/Product";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './styles/tailwind.css';
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
-function App() {
-    const [products, setProducts] = useState<Product[]>([]);
-    const [error, setError] = useState<Error | null>();
 
-    useEffect(() => {
-        ProductMethods.getAll()
-            .then((result) => {
-                if (result instanceof Error) {
-                    throw result;
-                }
-                setProducts(result);
-            })
-            .catch((error) => {
-                setError(error);
-            });
-    }, []);
-
+const App: React.FC = () => {
     return (
-        <div className="App">
-            <p>mqlksdfjk</p>
-            <ul>
-                {error ? <li>{error.message}</li> : products.map((product) => (
-                    <li key={product.id}>{product.name}</li>
-                ))}
-            </ul>
-        </div>
+        <Router>
+            <div className="App">
+                <main>
+                    <Routes>
+                      // Ajoutez les routes ici
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                    </Routes>
+                </main>
+            </div>
+        </Router>
     );
-}
+};
 
 export default App;
