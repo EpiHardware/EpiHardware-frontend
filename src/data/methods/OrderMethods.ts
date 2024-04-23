@@ -4,7 +4,7 @@ import UserMethods from "./UserMethods";
 
 abstract class OrderMethods {
     public static async getAll(): Promise<Order[] | Error> {
-        return await fetch('http://localhost:5432/api/orders')
+        return await fetch('http://localhost:8000/api/orders')
             .then(response => {
                 let data: any = response.json()
                 if (!response.ok) {
@@ -29,7 +29,7 @@ abstract class OrderMethods {
     }
 
     public static async get(orderId: string): Promise<Order | Error> {
-        return await fetch(`http://localhost:5432/api/orders/${orderId}`)
+        return await fetch(`http://localhost:8000/api/orders/${orderId}`)
             .then(response => {
                 let data: any = response.json()
                 if (!response.ok) {
@@ -54,7 +54,7 @@ abstract class OrderMethods {
     }
 
     public static async checkout(order: Order): Promise<void> {
-        return await fetch('http://localhost:5432/api/validate', {
+        return await fetch('http://localhost:8000/api/validate', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ abstract class OrderMethods {
     }
 
     public static async addToCart(product: Product): Promise<void | Error> {
-        return await fetch(`http://localhost:5432/api/carts/${product.id}`, {
+        return await fetch(`http://localhost:8000/api/carts/${product.id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -91,7 +91,7 @@ abstract class OrderMethods {
     }
 
     public static async removeFromCart(product: Product): Promise<void | Error> {
-        return await fetch(`http://localhost:5432/api/carts/${product.id}`, {
+        return await fetch(`http://localhost:8000/api/carts/${product.id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ abstract class OrderMethods {
     }
 
     public static async getCart(): Promise<Product[] | Error> {
-        return await fetch(`http://localhost:5432/api/carts/}`, {
+        return await fetch(`http://localhost:8000/api/carts/}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

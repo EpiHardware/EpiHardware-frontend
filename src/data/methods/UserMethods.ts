@@ -22,7 +22,7 @@ abstract class UserMethods {
     }
 
     public static async login(login: string, password: string): Promise<void | Error> {
-        return await fetch('http://localhost:5432/api/login', {
+        return await fetch('http://localhost:8000/api/login', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -42,7 +42,7 @@ abstract class UserMethods {
     }
 
     public static async logout(login: string, password: string): Promise<void | Error> {
-        return await fetch('http://localhost:5432/api/logout', {
+        return await fetch('http://localhost:8000/api/logout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ abstract class UserMethods {
     }
 
     public static async update(user: User): Promise<void | Error> {
-        return await fetch('http://localhost:5432/api/users', {
+        return await fetch('http://localhost:8000/api/users', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ abstract class UserMethods {
     }
 
     public static async getDetails(login: string, token: string): Promise<User | Error> {
-        return await fetch('http://localhost:5432/api/users', {
+        return await fetch('http://localhost:8000/api/users', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
