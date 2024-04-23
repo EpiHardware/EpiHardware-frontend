@@ -8,7 +8,7 @@ abstract class UserMethods {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(user.toJSON())
+            body: JSON.stringify(user.toJSONWithPassword())
         })
             .then(response => {
                 let data: any = response.json()
@@ -39,6 +39,24 @@ abstract class UserMethods {
             .catch((error) => {
                 return error
             });
+    }
+
+    public static async logout(login: string, password: string): Promise<void | Error> {
+        return await fetch('http://localhost:5432/api/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + UserMethods.getToken()
+            },
+        })
+            .then(response => {
+                let data: any = response.json()
+                if (!response.ok) {
+                    throw new Error(data.message)
+                }
+                this.removeToken()
+            })
+            .catch((error) => error);
     }
 
     public static async update(user: User): Promise<void | Error> {
@@ -90,7 +108,7 @@ abstract class UserMethods {
         localStorage.setItem("token", token)
     }
 
-    public static removeToken(token: string): void {
+    public static removeToken(): void {
         localStorage.removeItem("token")
     }
 }
