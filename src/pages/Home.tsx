@@ -1,10 +1,10 @@
 import React, { FC } from "react";
-import Navbar from "../compenents/Navbar";
+import Layout from "../compenents/Layout";
 
 const Home: FC = () => {
     return (
         <>
-            <Navbar />
+            <Layout />
         </>
     );
 };
