@@ -20,7 +20,7 @@ const Navbar = () => {
       <div className="py-4 bg-white top-0 sticky z-10 shadow-lg font-karla">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center">
-            <Link to="/" className="text-4xl font-bold" data-test="main-logo">
+            <Link to="/home" className="text-4xl font-bold" data-test="main-logo">
               EpiHardware
             </Link>
             <div className="lg:flex hidden w-full max-w-[500px]">
