@@ -4,10 +4,9 @@ import Banner from "../compenents/Banner";
 
 const Home: FC = () => {
     return (
-        <>
-            <Layout />
-            <Banner />
-        </>
+            <Layout>
+                <Banner />
+            </Layout>
     );
 };
 
