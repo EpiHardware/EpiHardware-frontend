@@ -29,6 +29,13 @@ const Navbar = () => {
               >
                 Products
               </Link>
+              <Link
+                  to="/products"
+                  className="text-xl font-bold"
+                  data-test="main-products"
+              >
+                Profil
+              </Link>
               <div className="flex items-center gap-2">
                 <div className="text-gray-500 text-2xl">
                 </div>
