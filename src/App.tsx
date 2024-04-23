@@ -7,11 +7,11 @@ import Register from "./pages/Register";
 
 const App: React.FC = () => {
     return (
+
         <Router>
             <div className="App">
                 <main>
                     <Routes>
-                      // Ajoutez les routes ici
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                     </Routes>
