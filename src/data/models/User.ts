@@ -22,6 +22,16 @@ class User {
         }
     }
 
+    public toJSONWithPassword() {
+        return {
+            login: this.login,
+            firstname: this.firstname,
+            lastname: this.lastname,
+            email: this.email,
+            password: this.password
+        }
+    }
+
     public static fromJSON(json: any) {
         return new User(json.login, json.password, json.firstname, json.lastname, json.email)
     }

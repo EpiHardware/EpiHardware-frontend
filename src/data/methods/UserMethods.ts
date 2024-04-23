@@ -3,7 +3,7 @@ import User from "../models/User";
 abstract class UserMethods {
 
     public static async register(user: User): Promise<void | Error> {
-        return await fetch('http://localhost:5432/api/register', {
+        return await fetch('http://localhost:8000/api/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
