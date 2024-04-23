@@ -42,7 +42,7 @@ abstract class UserMethods {
             });
     }
 
-    public static async logout(login: string, password: string): Promise<void | Error> {
+    public static async logout(): Promise<void | Error> {
         return await fetch('http://localhost:8000/api/logout', {
             method: 'POST',
             headers: {
@@ -51,10 +51,6 @@ abstract class UserMethods {
             },
         })
             .then(response => {
-                let data: any = response.json()
-                if (!response.ok) {
-                    throw new Error(data.message)
-                }
                 this.removeToken()
             })
             .catch((error) => error);
