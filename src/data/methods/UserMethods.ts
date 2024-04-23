@@ -21,21 +21,22 @@ abstract class UserMethods {
             });
     }
 
-    public static async login(login: string, password: string): Promise<void | Error> {
+    public static async login(email: string, password: string): Promise<void | Error> {
         return await fetch('http://localhost:8000/api/login', {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({login: login, password: password})
+            body: JSON.stringify({email: email, password: password})
         })
             .then(response => {
                 let data: any = response.json()
                 if (!response.ok) {
                     throw new Error(data.message)
                 }
-                this.addToken(data.token)
+                return data
             })
+            .then((data) => this.addToken(data.token))
             .catch((error) => {
                 return error
             });
