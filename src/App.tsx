@@ -3,17 +3,17 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './styles/tailwind.css';
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-
+import Home from "./pages/Home"; // Importez le composant Home
 
 const App: React.FC = () => {
     return (
-
         <Router>
             <div className="App">
                 <main>
                     <Routes>
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
+                        <Route path="/home" element={<Home />} /> {/* Ajoutez cette ligne */}
                     </Routes>
                 </main>
             </div>
