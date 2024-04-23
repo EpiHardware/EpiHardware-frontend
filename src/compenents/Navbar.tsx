@@ -2,8 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
+import { FaUser } from 'react-icons/fa';
 
 const Navbar = () => {
+
+  // Assume you have a state or context that keeps track of the user's login status
+  // replace this with the actual username
+  //Remettre avec la db le login et le name de l'utilisateur connecter
+
+  const isLoggedIn = false;
+  const username = "Terry";
+  const capitalizeFirstLetter = (string : string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   return (
       <div className="py-4 bg-white top-0 sticky z-10 shadow-lg font-karla">
         <div className="container mx-auto px-4">
@@ -29,16 +41,32 @@ const Navbar = () => {
               >
                 Products
               </Link>
-              <Link
-                  to="/products"
-                  className="text-xl font-bold"
-                  data-test="main-products"
-              >
-                Profil
-              </Link>
-              <div className="flex items-center gap-2">
-                <div className="text-gray-500 text-2xl">
-                </div>
+
+              <div className="flex items-center gap-2 ">
+                {isLoggedIn ? (
+                    <>
+                      <img
+                          src="https://robohash.org/Terry.png?set=set4"
+                          alt="avatar"
+                          className="w-6"
+                      />
+                      <div className="text-xl font-bold">
+                        <Link to="/profile" className="cursor-pointer hover:opacity-85" data-test="profile-btn">
+                          {capitalizeFirstLetter(username)}
+                        </Link>
+                      </div>
+                    </>
+                ) : (
+                    <>
+                      <FaUser className="text-gray-500 text-2xl" />
+
+                      <div className="text-xl font-bold" >
+                        <Link to="/login" className="cursor-pointer hover:opacity-85" data-test="login-btn">
+                          Login
+                        </Link>
+                      </div>
+                    </>
+                )}
               </div>
               <div
                   className="text-gray-500 text-[32px] relative hover:cursor-pointer hover:opacity-80"
