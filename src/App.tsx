@@ -5,6 +5,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home"; // Importez le composant Home
 import Profile from "./pages/Profile";
+import ProductDetail from "./pages/ProductDetail";
+import Cart from "./pages/Cart";
 const App: React.FC = () => {
     return (
         <Router>
@@ -13,7 +15,9 @@ const App: React.FC = () => {
                     <Routes>
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
-                        <Route path="/home" element={<Home />} /> {/* Ajoutez cette ligne */}
+                        <Route path="/home" element={<Home />} />
+                        <Route path="/products/:productId" element={<ProductDetail />} />
+                        <Route path="/cart" element={<Cart/>} />
                         <Route path="/profile" element={<Profile />} />
                     </Routes>
                 </main>

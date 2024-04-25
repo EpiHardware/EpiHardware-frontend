@@ -64,13 +64,10 @@ const Register: React.FC = () => {
                 icon: 'error',
                 title: 'Registration Failed',
                 text: (error as Error).message  || 'Please try again.',
+                confirmButtonColor: '#3b82f6',
             });
         }
     };
-
-    const redirectToLogin = () => {
-        navigate('/login');
-    }
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
