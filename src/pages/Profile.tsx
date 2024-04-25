@@ -1,122 +1,122 @@
-import { FC, useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Layout from "../compenents/Layout";
-interface Address {
-  address: string;
-  city: string;
-  postalCode: string;
-  state: string;
+import LoadingSpinner from "../compenents/common/LoadingSpinner";
+
+
+interface UserDetails {
+    login: string;
+    email: string;
+    firstname: string;
+    lastname: string;
 }
 
-interface Company {
-  address: Address;
-  department: string;
-  name: string;
-  title: string;
-}
+const ProfilePage: React.FC = () => {
+    const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [editMode, setEditMode] = useState<boolean>(false);
+    const [formData, setFormData] = useState<UserDetails>({
+        login: '',
+        email: '',
+        firstname: '',
+        lastname: ''
+    });
 
-interface UserInfo {
-  id: number;
-  image: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-  maidenName: string;
-  age: number;
-  gender: string;
-  email: string;
-  phone: string;
-  bloodGroup: string;
-  address: Address;
-  company: Company;
-  university: string;
-}
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const headers = { Authorization: `Bearer ${token}` };
+            axios.get<UserDetails>('http://localhost:8000/api/users', { headers })
+                .then(response => {
+                    setUserDetails(response.data);
+                    setFormData(response.data);
+                    setLoading(false);
+                })
+                .catch(error => {
+                    console.error('Error fetching user details:', error);
+                    setLoading(false);
+                });
+        } else {
+            setLoading(false);
+        }
+    }, []);
 
-const Profile: FC = () => {
-  const [info, setInfo] = useState<UserInfo>();
+    const handleEditToggle = () => {
+        setEditMode(!editMode);
+    };
 
-  useEffect(() => {
-    fetch("https://dummyjson.com/users/1")
-      .then((res) => res.json())
-      .then((data) => {
-        setInfo(data);
-      });
-  }, []);
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
 
-  return (
-      <Layout>
-    <div className="container mx-auto min-h-[83vh] w-full max-w-5xl">
-      <h1 className="text-4xl p-4 font-bold font-lora">Your Account</h1>
-      <div className="font-karla grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-1 p-4">
-        <img src={info?.image} alt="pp" className="text-center" />
-        <table>
-          <tbody>
-            <tr>
-              <td className="font-bold">Username</td>
-              <td>{info?.username}</td>
-            </tr>
-            <tr>
-              <td className="font-bold">First Name</td>
-              <td>{info?.firstName}</td>
-            </tr>
-            <tr>
-              <td className="font-bold">Last Name</td>
-              <td>{info?.lastName}</td>
-            </tr>
-            <tr>
-              <td className="font-bold w-32">Maiden Name</td>
-              <td>{info?.maidenName}</td>
-            </tr>
-            <tr>
-              <td className="font-bold">Email</td>
-              <td>{info?.email}</td>
-            </tr>
-            <tr>
-              <td className="font-bold">Phone</td>
-              <td>{info?.phone}</td>
-            </tr>
-            <tr>
-              <td className="font-bold">University</td>
-              <td>{info?.university}</td>
-            </tr>
-            <tr>
-              <td className="font-bold">Age</td>
-              <td>{info?.age}</td>
-            </tr>
-            <tr>
-              <td className="font-bold">Gender</td>
-              <td>{info?.gender}</td>
-            </tr>
-            <tr>
-              <td className="font-bold">Blood Group</td>
-              <td>{info?.bloodGroup}</td>
-            </tr>
-          </tbody>
-        </table>
-        <div className="space-y-2">
-          <div>
-            <h1 className="font-bold">Address</h1>
-            <p>{info?.address.address}</p>
-            <p>
-              {info?.address.city}, {info?.address.postalCode},{" "}
-              {info?.address.state}
-            </p>
-          </div>
-          <div>
-            <h1 className="font-bold">Company</h1>
-            <p>{info?.company.name}</p>
-            <p>{info?.company.title}</p>
-            <p>{info?.company.department}</p>
-            <p>{info?.company.address.address}</p>
-            <p>
-              {info?.company.address.city}, {info?.company.address.postalCode},{" "}
-              {info?.company.address.state}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-      </Layout>
-  );
+    const handleSubmit = (event: React.FormEvent) => {
+        event.preventDefault();
+        const token = localStorage.getItem('token');
+        const headers = { Authorization: `Bearer ${token}` };
+        axios.patch('http://localhost:8000/api/users', formData, { headers })
+            .then(response => {
+                setUserDetails(formData);
+                setEditMode(false);
+                console.log('Update successful:', response.data);
+            })
+            .catch(error => {
+                console.error('Failed to update user:', error);
+            });
+    };
+
+    if (loading) return <LoadingSpinner />;
+
+    return (
+        <Layout>
+            <div className="container mx-auto p-6 bg-white rounded-lg shadow-md">
+                <h2 className="text-3xl font-bold text-center mb-6">User Profile</h2>
+                {!editMode ? (
+                    <div className="text-center">
+                        <p className="text-lg mb-2"><strong>Login:</strong> {userDetails?.login}</p>
+                        <p className="text-lg mb-2"><strong>Email:</strong> {userDetails?.email}</p>
+                        <p className="text-lg mb-2"><strong>First Name:</strong> {userDetails?.firstname}</p>
+                        <p className="text-lg mb-2"><strong>Last Name:</strong> {userDetails?.lastname}</p>
+                        <button onClick={handleEditToggle} className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors duration-300">
+                            Edit Profile
+                        </button>
+                    </div>
+                ) : (
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="flex flex-col items-center">
+                            <label className="block text-lg font-medium text-gray-700">
+                                Login:
+                                <input type="text" name="login" value={formData.login} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                            </label>
+                            <label className="block text-lg font-medium text-gray-700">
+                                Email:
+                                <input type="email" name="email" value={formData.email} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                            </label>
+                            <label className="block text-lg font-medium text-gray-700">
+                                First Name:
+                                <input type="text" name="firstname" value={formData.firstname} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                            </label>
+                            <label className="block text-lg font-medium text-gray-700">
+                                Last Name:
+                                <input type="text" name="lastname" value={formData.lastname} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                            </label>
+                        </div>
+                        <div className="flex justify-center space-x-4 mt-4">
+                            <button type="submit" className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition-colors duration-300">
+                                Save Changes
+                            </button>
+                            <button onClick={handleEditToggle} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors duration-300">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                )}
+            </div>
+        </Layout>
+    );
 };
 
-export default Profile;
+export default ProfilePage;

@@ -11,6 +11,7 @@ interface Product {
     description: string;
     photo: string;
     price: number;
+    quantity: number;
 }
 
 const ProductDetail: React.FC = () => {
@@ -40,7 +41,7 @@ const ProductDetail: React.FC = () => {
     }, [productId]);
 
     const addToCart = () => {
-        axios.post(`http://localhost:8000/api/carts/${productId}`, {}, { headers })
+        axios.post(`http://localhost:8000/api/carts/${productId}`, { quantity }, { headers })
             .then(response => {
                 Swal.fire({
                     title: 'Success!',
@@ -92,8 +93,11 @@ const ProductDetail: React.FC = () => {
                                         value={quantity}
                                         onChange={e => setQuantity(Number(e.target.value))}
                                     >
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
+                                        {Array.from({ length: product?.quantity || 1 }, (_, index) => index + 1).map((num) => (
+                                            <option key={num} value={num}>
+                                                {num}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                                 <button onClick={addToCart}

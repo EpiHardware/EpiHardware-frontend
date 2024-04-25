@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 // @ts-ignore
 import { BsSearch } from "react-icons/bs";
@@ -11,20 +11,29 @@ import axios from 'axios';
 import debounce from 'lodash.debounce';
 
 interface Product {
-    id: number;
-    name: string;
-    price: number;
-    description: string;
-    photo: string;
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+  photo: string;
 }
-const Navbar = () => {
+
+interface UserDetails {
+  login: string;
+  email: string;
+  firstname: string;
+  lastname: string;
+}
+
+const Navbar: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [isDropdownVisible, setIsDropdownVisible] = useState<boolean>(false);
-  const isLoggedIn = false;
-  const username = "Terry";
+  const [cartItemCount, setCartItemCount] = useState<number>(0);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [userDetails, setUserDetails] = useState<UserDetails>({ login: '', email: '', firstname: '', lastname: '' });
 
-  const capitalizeFirstLetter = (string: string) => {
+  const capitalizeFirstLetter = (string: string): string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
@@ -37,37 +46,60 @@ const Navbar = () => {
 
     const token = localStorage.getItem('token');
     const headers = token ? { Authorization: `Bearer ${token}` } : {};
-    console.log("Searching for:", query);
-
     try {
       const response = await axios.get(`http://localhost:8000/api/products/search?name=${encodeURIComponent(query)}`, { headers });
-      console.log("Response Data:", response.data);
-      const limitedResults = response.data.slice(0, 7);
-      setSearchResults(limitedResults);
+      setSearchResults(response.data.slice(0, 7));
       setIsDropdownVisible(true);
     } catch (error) {
-      console.error('Error fetching products', error);
+      console.error('Error fetching products:', error);
       setIsDropdownVisible(false);
     }
   }, 300);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setSearchTerm(value);
-    debouncedSearch(value);
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    setSearchTerm(event.target.value);
+    debouncedSearch(event.target.value);
   };
-
-
-  useEffect(() => {
-    if (searchTerm.trim() === '') {
-      setSearchResults([]);
-      setIsDropdownVisible(false);
-    }
-  }, [searchTerm]);
 
   const handleProductClick = () => {
     setIsDropdownVisible(false);
   };
+
+  const fetchCartItems = (): void => {
+    const token = localStorage.getItem('token');
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+    axios.get('http://localhost:8000/api/carts', { headers })
+        .then(response => setCartItemCount(response.data.length))
+        .catch(error => console.error('Error fetching cart items:', error));
+  };
+
+  const logout = (): void => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    setUserDetails({ login: '', email: '', firstname: '', lastname: '' });
+    window.location.href = '/login';
+  };
+
+  useEffect(() => {
+    setIsLoggedIn(!!localStorage.getItem('token'));
+    if (searchTerm.trim() === '') {
+      setSearchResults([]);
+      setIsDropdownVisible(false);
+      fetchCartItems();
+    }
+  }, [searchTerm]);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const headers = { Authorization: `Bearer ${token}` };
+      axios.get<UserDetails>('http://localhost:8000/api/users', { headers })
+          .then(response => {
+            setUserDetails({ ...response.data, login: capitalizeFirstLetter(response.data.login) });
+          })
+          .catch(error => console.error('Error fetching user details:', error));
+    }
+  }, []);
 
   return (
       <div className="py-4 bg-white top-0 sticky z-10 shadow-lg font-karla">
@@ -94,11 +126,12 @@ const Navbar = () => {
                   isDropdownVisible && searchResults.length > 0 && (
                       <div className="absolute z-10 w-full bg-white border-2 border-blue-500 mt-10 ">
                         {searchResults.map((product) => (
-                            <Link to={`/products/${product.id}`} key={product.id} className="flex items-center p-2 hover:bg-gray-100" onClick={handleProductClick}>                              <img
-                                  src={product.photo}
-                                  alt={product.name}
-                                  className="w-10 h-10 object-cover mr-2"
-                              />
+                            <Link to={`/products/${product.id}`} key={product.id} className="flex items-center p-2 hover:bg-gray-100" onClick={handleProductClick}>
+                              <img
+                                src={product.photo}
+                                alt={product.name}
+                                className="w-10 h-10 object-cover mr-2"
+                            />
                               <div className="flex flex-col flex-grow">
                                 <span className="font-semibold">{product.name}</span>
                                 <span className="text-gray-600 text-sm">{`${product.price}€`}</span>
@@ -119,42 +152,38 @@ const Navbar = () => {
               </Link>
 
               <div className="flex items-center gap-2">
-                {isLoggedIn ? (
                     <>
-                      <img
-                          src="https://robohash.org/Terry.png?set=set4"
-                          alt="avatar"
-                          className="w-6"
-                      />
+                        <FaUser className="text-gray-500 text-2xl" />
                       <div className="text-xl font-bold">
                         <Link to="/profile" className="cursor-pointer hover:opacity-85" data-test="profile-btn">
-                          {capitalizeFirstLetter(username)}
+                          {capitalizeFirstLetter(userDetails.login)}
                         </Link>
                       </div>
                     </>
-                ) : (
-                    <>
-                      <FaUser className="text-gray-500 text-2xl" />
-                      <div className="text-xl font-bold">
-                        <Link to="/login" className="cursor-pointer hover:opacity-85" data-test="login-btn">
-                          Login
-                        </Link>
-                      </div>
-                    </>
-                )}
+
               </div>
+                  <button
+                      onClick={logout}
+                      className="text-xl font-bold"
+                      data-test="logout-btn"
+                  >
+                    Logout
+                  </button>
               <div
                   className="text-gray-500 text-[32px] relative hover:cursor-pointer hover:opacity-80"
                   data-test="cart-btn"
               >
                 <Link to="/cart">
-                <AiOutlineShoppingCart />
+                  <AiOutlineShoppingCart />
                 </Link>
-                <div
-                    className="absolute top-[-15px] right-[-10px] bg-red-600 w-[25px] h-[25px] rounded-full text-white text-[14px] grid place-items-center"
-                    data-test="cart-item-count"
-                >
-                </div>
+                {cartItemCount > 0 && (
+                    <div
+                        className="absolute top-[-10px] right-[-10px] bg-red-600 w-[25px] h-[25px] rounded-full text-white text-[14px] grid place-items-center"
+                        data-test="cart-item-count"
+                    >
+                      {cartItemCount}
+                    </div>
+                )}
               </div>
             </div>
           </div>
