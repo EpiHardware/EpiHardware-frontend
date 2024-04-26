@@ -10,8 +10,6 @@ const NotFoundPage: React.FC = () => {
                 <p className="mt-4 text-gray-500">We're sorry, the page you requested could not be found. Please go back to the homepage or contact us if the problem persists.</p>
                 <div className="mt-6">
                     <Link to="/home" className="text-blue-500 hover:underline">Go to Home</Link>
-                    <span className="mx-2 text-gray-300">|</span>
-                    <Link to="/login" className="text-blue-500 hover:underline">Login</Link>
                 </div>
             </div>
         </div>
