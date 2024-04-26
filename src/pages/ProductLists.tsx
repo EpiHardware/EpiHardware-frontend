@@ -81,12 +81,14 @@ const ProductList: React.FC = () => {
             <div className="grid md:grid-cols-3 gap-4">
                 {products.map(product => (
                     <div key={product.id} className="p-4 border rounded-lg hover:shadow-lg transition-shadow">
+                        <Link to={`/products/${product.id}`} className="no-underline">
                         <img src={product.photo} alt={product.name} className="w-full h-64 object-cover rounded-md mb-4" />
-                        <Link to={`/products/${product.id}`} className="text-blue-600 hover:underline">
+
                         <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
-                        </Link>
+
                         <p className="text-gray-600 mb-4">{product.description}</p>
                         <p className="text-lg font-bold">${product.price}</p>
+                        </Link>
                     </div>
                 ))}
             </div>

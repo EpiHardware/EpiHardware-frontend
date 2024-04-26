@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import {Link} from "react-router-dom";
 import LoadingSpinner from "../compenents/common/LoadingSpinner";
 import Layout from "../compenents/Layout";
-import {Link} from "react-router-dom";
 
 interface ProductInCart {
     product_id: number;
@@ -16,7 +16,7 @@ interface ProductInCart {
 const Cart: React.FC = () => {
     const [cartItems, setCartItems] = useState<ProductInCart[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    let totalAmount =0;
+    let totalAmount = 0;
 
     useEffect(() => {
         fetchCartItems();
@@ -39,14 +39,33 @@ const Cart: React.FC = () => {
             });
     };
 
-    const removeItemFromCart = (productId: number) => {
-        axios.delete(`http://localhost:8000/api/carts/${productId}`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
+    const handleOrder = () => {
+        if (cartItems.length === 0) {
+            Swal.fire('Error!', 'Your cart is empty.', 'error');
+            return; // Exit the function early
+        }
+        axios.post('http://localhost:8000/api/carts/validate', {}, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
             .then(response => {
-                Swal.fire('Removed!', 'The product has been removed from your cart.', 'success');
-                fetchCartItems();
+                Swal.fire({
+                    title: 'Processing your order...',
+                    html: 'Please wait while we simulate payment.',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading()
+                    }
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        Swal.fire('Completed!', 'Your order has been placed successfully!', 'success');
+                        console.log('Order placed:', response.data);
+                        //window.location.href = "/home";
+
+                    }
+                });
             })
             .catch(error => {
-                Swal.fire('Error!', 'Failed to remove product from cart.', 'error');
+                Swal.fire('Failed!', 'Your order could not be processed.', 'error');
+                console.log('Error validating cart:', error)
             });
     };
 
@@ -59,6 +78,17 @@ const Cart: React.FC = () => {
                 item.product_id === productId ? { ...item, quantity: safeQuantity } : item
             )
         );
+    };
+
+    const removeItemFromCart = (productId: number) => {
+        axios.delete(`http://localhost:8000/api/carts/${productId}`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
+            .then(response => {
+                Swal.fire('Removed!', 'The product has been removed from your cart.', 'success');
+                fetchCartItems();
+            })
+            .catch(error => {
+                Swal.fire('Error!', 'Failed to remove product from cart.', 'error');
+            });
     };
 
     if (loading) return <LoadingSpinner />;
@@ -88,7 +118,7 @@ const Cart: React.FC = () => {
                                         <img src={item.photo} alt={item.name} className="h-16" />
                                         <div>
                                             <Link to={`/products/${item.product_id}`} className="text-blue-600 hover:underline">
-                                            <p className="text-lg font-bold">{item.name}</p>
+                                                <p className="text-lg font-bold">{item.name}</p>
                                             </Link>
                                             <p className="text-sm">EN STOCK</p>
                                         </div>
@@ -121,7 +151,10 @@ const Cart: React.FC = () => {
                             <span className="text-xl font-bold">Total TTC</span>
                             <span className="text-xl font-bold">${totalAmount.toFixed(2)}</span>
                         </div>
-                        <button className="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-3 px-6 rounded mb-4 w-full">
+                        <button
+                            className="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-3 px-6 rounded mb-4 w-full"
+                            onClick={handleOrder}
+                        >
                             Passer Commande
                         </button>
                     </div>
