@@ -8,10 +8,11 @@ import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import ProductList from "./pages/ProductLists";
 import ProfilePage from "./pages/Profile";
+import NotFoundPage from "./pages/NotFoundPage";
 
 // Composant PrivateRoute
 const PrivateRoute: React.FC = () => {
-    const isAuth = localStorage.getItem('token'); // Vérifiez si un token est stocké
+    const isAuth = localStorage.getItem('token');
     return isAuth ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
@@ -30,6 +31,7 @@ const App: React.FC = () => {
                             <Route path="/profile" element={<ProfilePage />} />
                             <Route path="/products" element={<ProductList />} />
                         </Route>
+                        <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                 </main>
             </div>
