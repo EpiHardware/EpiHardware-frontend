@@ -47,7 +47,7 @@ const Navbar: React.FC = () => {
     const token = localStorage.getItem('token');
     const headers = token ? { Authorization: `Bearer ${token}` } : {};
     try {
-      const response = await axios.get(`http://localhost:8000/api/products/search?name=${encodeURIComponent(query)}`, { headers });
+      const response = await axios.get(`https://localhost:8000/api/products/search?name=${encodeURIComponent(query)}`, { headers });
       setSearchResults(response.data.slice(0, 7));
       setIsDropdownVisible(true);
     } catch (error) {
@@ -68,7 +68,7 @@ const Navbar: React.FC = () => {
   const fetchCartItems = (): void => {
     const token = localStorage.getItem('token');
     const headers = token ? { Authorization: `Bearer ${token}` } : {};
-    axios.get('http://localhost:8000/api/carts', { headers })
+    axios.get('https://localhost:8000/api/carts', { headers })
         .then(response => setCartItemCount(response.data.length))
         .catch(error => console.error('Error fetching cart items:', error));
   };
@@ -93,7 +93,7 @@ const Navbar: React.FC = () => {
     const token = localStorage.getItem('token');
     if (token) {
       const headers = { Authorization: `Bearer ${token}` };
-      axios.get<UserDetails>('http://localhost:8000/api/users', { headers })
+      axios.get<UserDetails>('https://localhost:8000/api/users', { headers })
           .then(response => {
             setUserDetails({ ...response.data, login: capitalizeFirstLetter(response.data.login) });
           })
