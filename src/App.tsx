@@ -30,6 +30,7 @@ const App: React.FC = () => {
                             <Route path="/cart" element={<Cart />} />
                             <Route path="/profile" element={<ProfilePage />} />
                             <Route path="/products" element={<ProductList />} />
+                            <Route path="*" element={<Navigate to="/home" replace />} />
                         </Route>
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>
