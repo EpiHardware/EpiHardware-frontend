@@ -23,7 +23,7 @@ const ProductList: React.FC = () => {
 
     useEffect(() => {
         // Fetch products from your API
-        axios.get('http://localhost:8000/api/products', { headers } )
+        axios.get('https://localhost:8000/api/products', { headers } )
             .then(response => {
                 setProducts(response.data);
                 console.log('Products:', response.data)
