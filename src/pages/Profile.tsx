@@ -26,7 +26,7 @@ const ProfilePage: React.FC = () => {
         const token = localStorage.getItem('token');
         if (token) {
             const headers = { Authorization: `Bearer ${token}` };
-            axios.get<UserDetails>('http://localhost:8000/api/users', { headers })
+            axios.get<UserDetails>('https://localhost:8000/api/users', { headers })
                 .then(response => {
                     setUserDetails(response.data);
                     setFormData(response.data);
@@ -57,7 +57,7 @@ const ProfilePage: React.FC = () => {
         event.preventDefault();
         const token = localStorage.getItem('token');
         const headers = { Authorization: `Bearer ${token}` };
-        axios.patch('http://localhost:8000/api/users', formData, { headers })
+        axios.patch('https://localhost:8000/api/users', formData, { headers })
             .then(response => {
                 setUserDetails(formData);
                 setEditMode(false);
