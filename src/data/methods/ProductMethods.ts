@@ -1,8 +1,9 @@
 import Product from "../models/Product";
+import UserMethods from "./UserMethods";
 
 abstract class ProductMethods {
     public static async getAll(): Promise<Product[] | Error> {
-        return await fetch('http://localhost:3000/products') // Todo: update the URL of this fetch request
+        return await fetch('http://localhost:8000/api/products')
             .then(response => {
                 let data: any = response.json()
                 if (!response.ok) {
@@ -21,13 +22,14 @@ abstract class ProductMethods {
             })
     }
 
-    public static async get(id: number): Promise<Product | Error> {
-        return await fetch(`http://localhost:3000/products/${id}`) // Todo: update the URL of this fetch request
+    public static async get(productId: number): Promise<Product | Error> {
+        return await fetch(`http://localhost:8000/api/products/${productId}`)
             .then(response => {
+                let data: any = response.json()
                 if (!response.ok) {
-                    throw new Error('Network response was not ok')
+                    throw new Error(data.message)
                 }
-                return response.json();
+                return data;
             })
             .then(data => {
                 return new Product(data.id, data.name, data.description, data.price, data.photo)
@@ -37,33 +39,47 @@ abstract class ProductMethods {
             });
     }
 
-    public static async create(product: Product): Promise<Product | Error> {
-        return await fetch('http://localhost:3000/products', { // Todo: update the URL of this fetch request
+    public static async create(product: Product): Promise<void | Error> {
+        return await fetch('http://localhost:8000/api/products', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + UserMethods.getToken()
             },
             body: JSON.stringify(product.toJSON())
         })
             .then(response => {
+                let data: any = response.json()
                 if (!response.ok) {
-                    throw new Error('Network response was not ok')
+                    throw new Error(data.message)
                 }
-                return response.json();
             })
             .catch((error) => {
                 return error
             });
     }
 
-    public static async update(product: Product): Promise<Product | Error> {
-        return Error("Not Implemented")
-        //Todo: Implement the update method
+    public static async update(product: Product): Promise<void> {
+        await fetch(`http://localhost:8000/api/products/${product.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + UserMethods.getToken()
+                },
+                body: JSON.stringify(product.toJSON())
+            }
+        )
     }
 
-    public static async delete(product: Product): Promise<Product | Error> {
-        return Error("Not Implemented")
-        //Todo: Implement the delete method
+    public static async delete(product: Product): Promise<void> {
+        await fetch(`http://localhost:8000/api/products/${product.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + UserMethods.getToken()
+                },
+            }
+        )
     }
 }
 
