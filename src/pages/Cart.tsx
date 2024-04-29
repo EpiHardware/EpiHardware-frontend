@@ -23,7 +23,7 @@ const Cart: React.FC = () => {
     }, []);
 
     const fetchCartItems = () => {
-        axios.get('http://localhost:8000/api/carts', { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
+        axios.get('https://localhost:8000/api/carts', { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
             .then(response => {
                 const itemsWithQuantity = response.data.map((item: ProductInCart) => ({
                     ...item,
@@ -44,7 +44,7 @@ const Cart: React.FC = () => {
             Swal.fire('Error!', 'Your cart is empty.', 'error');
             return; // Exit the function early
         }
-        axios.post('http://localhost:8000/api/carts/validate', {}, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
+        axios.post('https://localhost:8000/api/carts/validate', {}, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
             .then(response => {
                 Swal.fire({
                     title: 'Processing your order...',
@@ -81,7 +81,7 @@ const Cart: React.FC = () => {
     };
 
     const removeItemFromCart = (productId: number) => {
-        axios.delete(`http://localhost:8000/api/carts/${productId}`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
+        axios.delete(`https://localhost:8000/api/carts/${productId}`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
             .then(response => {
                 Swal.fire('Removed!', 'The product has been removed from your cart.', 'success');
                 fetchCartItems();
