@@ -25,7 +25,7 @@ const ProductDetail: React.FC = () => {
     const [quantity, setQuantity] = useState<number>(1);
 
     useEffect(() => {
-        axios.get(`http://localhost:8000/api/products/${productId}`, { headers })
+        axios.get(`https://localhost:8000/api/products/${productId}`, { headers })
             .then(response => {
                 setProduct(response.data);
                 setLoading(false);
@@ -41,7 +41,7 @@ const ProductDetail: React.FC = () => {
     }, [productId]);
 
     const addToCart = () => {
-        axios.post(`http://localhost:8000/api/carts/${productId}`, { quantity }, { headers })
+        axios.post(`https://localhost:8000/api/carts/${productId}`, { quantity }, { headers })
             .then(response => {
                 Swal.fire({
                     title: 'Success!',
