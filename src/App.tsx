@@ -9,6 +9,7 @@ import Cart from "./pages/Cart";
 import ProductList from "./pages/ProductLists";
 import ProfilePage from "./pages/Profile";
 import NotFoundPage from "./pages/NotFoundPage";
+import AdminPage from "./pages/Admin";
 
 // Composant PrivateRoute
 const PrivateRoute: React.FC = () => {
@@ -31,6 +32,7 @@ const App: React.FC = () => {
                             <Route path="/profile" element={<ProfilePage />} />
                             <Route path="/products" element={<ProductList />} />
                             <Route path="*" element={<Navigate to="/home" replace />} />
+                            <Route path="/admin" element={<AdminPage />} />
                         </Route>
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>
