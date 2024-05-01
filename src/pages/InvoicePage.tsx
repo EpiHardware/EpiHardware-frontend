@@ -167,7 +167,7 @@ const InvoicePage: React.FC = () => {
             </div>
             <div style={{ textAlign: 'center', marginTop: '20px' }}>
                 <button onClick={downloadPdfDocument} style={{ padding: '10px 20px', fontSize: '16px', borderRadius: '5px', backgroundColor: '#007BFF', color: '#ffffff' }}>
-                    Télécharger la facture en PDF
+                    Download PDF invoice
                 </button>
             </div>
         </Layout>
