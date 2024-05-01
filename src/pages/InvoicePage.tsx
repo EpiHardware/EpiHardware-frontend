@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import axios from 'axios';
 import {Link, useParams} from 'react-router-dom';
 import LoadingSpinner from "../compenents/common/LoadingSpinner";
@@ -6,6 +6,9 @@ import Layout from "../compenents/Layout";
 import {Simulate} from "react-dom/test-utils";
 import contextMenu = Simulate.contextMenu;
 import Button from "../compenents/common/Button";
+import html2canvas from "html2canvas";
+import JsPDF from "jspdf";
+import Swal from "sweetalert2";
 
 interface ProductDetails {
     id: number;
@@ -36,6 +39,7 @@ const InvoicePage: React.FC = () => {
     const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
+    const invoiceRef = useRef(null);
 
     useEffect(() => {
         const fetchOrderDetails = async () => {
@@ -56,6 +60,33 @@ const InvoicePage: React.FC = () => {
         fetchOrderDetails();
     }, [orderId]);
 
+    const downloadPdfDocument = () => {
+        const input = invoiceRef.current;
+        if (input) {
+            // Augmenter le scale pour améliorer la résolution de la capture
+            html2canvas(input, { scale: 2}).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new JsPDF({
+                    orientation: 'portrait',
+                    unit: 'pt',
+                    format: 'a4'
+                });
+
+                const imgProps = pdf.getImageProperties(imgData);
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                pdf.save(`invoice-${orderId}.pdf`);
+            }).catch(err => {
+                console.error('Could not generate PDF:', err);
+                Swal.fire('Error!', 'Could not generate PDF. Please try again later.', 'error');
+            });
+        } else {
+            Swal.fire('Error!', 'No invoice data available to download.', 'error');
+        }
+    };
+
     if (loading) return <LoadingSpinner />;
 
     return (
@@ -66,7 +97,7 @@ const InvoicePage: React.FC = () => {
                 </Link>
             </div>
 
-            <div className="container mx-auto p-8 bg-white rounded-lg shadow-lg mt-8">
+            <div ref={invoiceRef} className="container mx-auto p-8 bg-white rounded-lg shadow-lg mt-8">
 
                 <h1 className="text-3xl font-bold text-center mb-6">Invoice</h1>
                 <div className="space-y-6">
@@ -113,7 +144,7 @@ const InvoicePage: React.FC = () => {
                                             <span>{product.name}</span>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            <img src={product.photo} alt={product.name} className="h-10 w-10" />
+                                            <img src={product.photo} alt={product.name}  className="h-10 w-10" />
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {product.description}
@@ -133,6 +164,11 @@ const InvoicePage: React.FC = () => {
                         <p>No invoice details available.</p>
                     )}
                 </div>
+            </div>
+            <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                <button onClick={downloadPdfDocument} style={{ padding: '10px 20px', fontSize: '16px', borderRadius: '5px', backgroundColor: '#007BFF', color: '#ffffff' }}>
+                    Télécharger la facture en PDF
+                </button>
             </div>
         </Layout>
     );
