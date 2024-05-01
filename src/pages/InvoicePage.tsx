@@ -165,9 +165,9 @@ const InvoicePage: React.FC = () => {
                     )}
                 </div>
             </div>
-            <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                <button onClick={downloadPdfDocument} style={{ padding: '10px 20px', fontSize: '16px', borderRadius: '5px', backgroundColor: '#007BFF', color: '#ffffff' }}>
-                    Download PDF invoice
+            <div className="flex justify-center mt-8">
+                <button onClick={downloadPdfDocument} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 border border-blue-700 rounded shadow-lg transition duration-300 ease-in-out hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    Download PDF Invoice
                 </button>
             </div>
         </Layout>
