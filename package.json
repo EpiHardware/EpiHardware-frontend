@@ -13,6 +13,7 @@
     "@types/react": "*",
     "@types/react-dom": "*",
     "@types/swiper": "^6.0.0",
+    "html2pdf.js": "^0.10.1",
     "react": "*",
     "react-dom": "*",
     "react-hot-toast": "*",

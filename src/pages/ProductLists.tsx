@@ -19,20 +19,35 @@ const ProductList: React.FC = () => {
     const token = localStorage.getItem('token');
     const headers = token ? { Authorization: `Bearer ${token}` } : {};
     const [loading, setLoading] = useState<boolean>(true);
+    const [page, setPage] = useState<number>(1);
+    const [perPage, setPerPage] = useState<number>(9);
 
 
     useEffect(() => {
-        // Fetch products from your API
-        axios.get('https://localhost:8000/api/products', { headers } )
+        // Fetch all products from your API
+        axios.get('http://localhost:8000/api/products', { headers } )
             .then(response => {
-                setProducts(response.data);
-                console.log('Products:', response.data)
+                const startIndex = (page - 1) * perPage;
+                const endIndex = startIndex + perPage;
+                const paginatedProducts = response.data.slice(startIndex, endIndex);
+                setProducts(paginatedProducts);
+                console.log('Products:', paginatedProducts)
                 setLoading(false);
             })
             .catch(error => {
                 console.error('Error fetching products:', error);
             });
-    }, []);
+    }, [page, perPage]);
+
+    const nextPage = () => {
+        setPage(page + 1);
+        setLoading(true);
+    };
+
+    const prevPage = () => {
+        setPage(page - 1);
+        setLoading(true);
+    };
 
     const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         let sortedProducts = [...products];
@@ -91,6 +106,17 @@ const ProductList: React.FC = () => {
                         </Link>
                     </div>
                 ))}
+            </div>
+            <div className="flex justify-between items-center mb-6 mt-6">
+                <button onClick={prevPage} disabled={page === 1} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus:bg-gray-300">
+                    Previous
+                </button>
+                <div>
+                    <span className="text-sm font-medium text-gray-700">{`Page ${page}`}</span>
+                </div>
+                <button onClick={nextPage} disabled={products.length < perPage} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus:bg-gray-300">
+                    Next
+                </button>
             </div>
         </div>
         </Layout>

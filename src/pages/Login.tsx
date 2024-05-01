@@ -2,23 +2,27 @@ import React, { useState } from 'react';
 import Button from "../compenents/common/Button";
 import Input from '../compenents/common/Input';
 import {useNavigate} from "react-router-dom";
+import LoadingSpinner from "../compenents/common/LoadingSpinner";
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     const handleLogin = async () => {
         setError('');
+        setLoading(true);
 
         if (!email || !password) {
             setError('Email and password are required.');
+            setLoading(false);
             return;
         }
 
         try {
-            const response = await fetch('https://127.0.0.1:8000/api/login', {
+            const response = await fetch('http://127.0.0.1:8000/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -30,6 +34,7 @@ const Login: React.FC = () => {
 
             if (!response.ok) {
                 setError(data.message || 'An unexpected error occurred.');
+                setLoading(false);
                 return;
             }
 
@@ -40,8 +45,11 @@ const Login: React.FC = () => {
         } catch (error) {
             console.error('Login request failed:', error);
             setError('Failed to connect to the server.');
+            setLoading(false);
         }
     };
+
+    if (loading) return <LoadingSpinner />;
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">

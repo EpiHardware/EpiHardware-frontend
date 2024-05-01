@@ -44,7 +44,7 @@ const CarouselComponent: React.FC = () => {
                     throw new Error('Authentication token not found.');
                 }
 
-                const response = await axios.get('https://localhost:8000/api/products', {
+                const response = await axios.get('http://localhost:8000/api/products', {
                     headers: { Authorization: `Bearer ${token}` }
                 });
 
