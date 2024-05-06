@@ -10,6 +10,7 @@ import ProductList from "./pages/ProductLists";
 import ProfilePage from "./pages/Profile";
 import NotFoundPage from "./pages/NotFoundPage";
 import AdminPage from "./pages/Admin";
+import InvoicePage from "./pages/InvoicePage";
 
 // Composant PrivateRoute
 const PrivateRoute: React.FC = () => {
@@ -31,6 +32,7 @@ const App: React.FC = () => {
                             <Route path="/cart" element={<Cart />} />
                             <Route path="/profile" element={<ProfilePage />} />
                             <Route path="/products" element={<ProductList />} />
+                            <Route path="/invoice/:orderId" element={<InvoicePage />} />
                             <Route path="*" element={<Navigate to="/home" replace />} />
                             <Route path="/admin" element={<AdminPage />} />
                         </Route>
