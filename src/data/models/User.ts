@@ -1,0 +1,40 @@
+class User {
+    public login: string
+    public password: string
+    public firstname: string
+    public lastname: string
+    public email: string
+
+    constructor(login: string, password: string, firstname: string, lastname: string, email: string) {
+        this.login = login
+        this.password = password
+        this.firstname = firstname
+        this.lastname = lastname
+        this.email = email
+    }
+
+    public toJSON() {
+        return {
+            login: this.login,
+            firstname: this.firstname,
+            lastname: this.lastname,
+            email: this.email
+        }
+    }
+
+    public toJSONWithPassword() {
+        return {
+            login: this.login,
+            firstname: this.firstname,
+            lastname: this.lastname,
+            email: this.email,
+            password: this.password
+        }
+    }
+
+    public static fromJSON(json: any) {
+        return new User(json.login, json.password, json.firstname, json.lastname, json.email)
+    }
+}
+
+export default User
