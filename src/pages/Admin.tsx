@@ -31,19 +31,19 @@ const AdminPage: React.FC = () => {
         fetchProducts();
     };
 
-    const deleteProduct = async (id: number) => {
+    const deleteProduct = async (productId: number) => {
         const token = localStorage.getItem('token');
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-        await axios.delete(`https://localhost:8000/api/products/${id}`, { headers });
+        await axios.delete(`https://localhost:8000/api/products/${productId}`, { headers });
         fetchProducts();
     };
 
-    const updateProduct = async (id: number) => {
+    const updateProduct = async (productId: number) => {
         const token = localStorage.getItem('token');
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-        await axios.put(`https://localhost:8000/api/products/${id}`, { name, description, photo, price, quantity }, { headers });
+        await axios.put(`https://localhost:8000/api/products/${productId}`, { name, description, photo, price, quantity }, { headers });
         fetchProducts();
     };
     return (
